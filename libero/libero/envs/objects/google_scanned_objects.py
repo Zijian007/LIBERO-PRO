@@ -86,3 +86,65 @@ class GlazedRimPorcelainRamekin(GoogleScannedObject):
         obj_name="glazed_rim_porcelain_ramekin",
     ):
         super().__init__(name, obj_name)
+
+
+@register_object
+class BiggerAkitaBlackBowl(GoogleScannedObject):
+    def __init__(self, name="bigger_akita_black_bowl", obj_name="bigger_akita_black_bowl"):
+        super().__init__(name, obj_name)
+
+@register_object
+class BlackBowl(GoogleScannedObject):
+    def __init__(self, name="black_bowl", obj_name="black_bowl"):
+        super().__init__(name, obj_name)
+
+@register_object
+class RedAkitaBlackBowl(GoogleScannedObject):
+    def __init__(self, name="red_akita_black_bowl", obj_name="red_akita_black_bowl"):
+        super().__init__(name, obj_name)
+
+@register_object
+class RedBasket(GoogleScannedObject):
+    def __init__(self, name="red_basket", obj_name="red_basket"):
+        super().__init__(name, obj_name)
+
+@register_object
+class RedRamekin(GoogleScannedObject):
+    def __init__(
+        self,
+        name="red_ramekin",
+        obj_name="red_ramekin",
+    ):
+        super().__init__(name, obj_name)
+
+@register_object
+class YellowBowl(GoogleScannedObject):
+    def __init__(self, name="yellow_bowl", obj_name="yellow_bowl"):
+        super().__init__(name, obj_name)
+
+@register_object
+class YellowPlate(GoogleScannedObject):
+    def __init__(self, name="yellow_plate", obj_name="yellow_plate"):
+        super().__init__(name, obj_name)
+
+
+@register_object
+class RedSticker(CustomObjects):
+    def __init__(self,
+                 name="red_sticker",
+                 obj_name="red_sticker",
+                 ):
+        super().__init__(
+            name=name,
+            obj_name=obj_name,
+        )
+
+        # 设置圆柱体100%直立状态
+        self.rotation = {
+            "x": (0.0, 0.0),  # x轴不旋转，保持直立
+            "y": (0.0, 0.0),  # y轴不旋转，保持直立
+            "z": (0.0, 0.0),  # z轴也不旋转，完全固定朝向
+        }
+        self.rotation_axis = "z"  # 设置主旋转轴为z轴
+
+        # 确保100%直立，不设置任何强制旋转的init_quat
