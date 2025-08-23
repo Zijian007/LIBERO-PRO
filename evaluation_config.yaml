@@ -1,6 +1,6 @@
-bddl_files_path: "/data/zxy/vla-report/openvla-oft-main/experiments/robot/libero/LIBERO/libero/libero/bddl_files/"
-script_path: "/data/zxy/vla-report/openvla-oft-main/experiments/robot/libero/LIBERO/notebooks/generate_init_states.py"
-init_file_dir: "/data/zxy/vla-report/openvla-oft-main/experiments/robot/libero/LIBERO/libero/libero/init_files/"
+bddl_files_path: "./LIBERO/libero/libero/bddl_files/"
+script_path: "./LIBERO/notebooks/generate_init_states.py"
+init_file_dir: "./LIBERO/libero/libero/init_files/"
 
 use_environment: true
 use_swap: false
