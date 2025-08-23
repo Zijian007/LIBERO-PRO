@@ -1,0 +1,16 @@
+bddl_files_path: "/data/zxy/vla-report/openvla-oft-main/experiments/robot/libero/LIBERO/libero/libero/bddl_files/"
+script_path: "/data/zxy/vla-report/openvla-oft-main/experiments/robot/libero/LIBERO/notebooks/generate_init_states.py"
+init_file_dir: "/data/zxy/vla-report/openvla-oft-main/experiments/robot/libero/LIBERO/libero/libero/init_files/"
+
+use_environment: true
+use_swap: false
+use_object: false
+use_language: false
+use_task: false
+
+ood_task_configs:
+  environment: "./libero_ood/ood_environment.yaml"
+  swap: "./libero_ood/ood_spatial_relation.yaml"
+  object: "./libero_ood/ood_object.yaml"
+  language: "./libero_ood/ood_language.yaml"
+  task: "./libero_ood/ood_task.yaml"
