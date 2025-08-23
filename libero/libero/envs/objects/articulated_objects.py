@@ -266,3 +266,76 @@ class FlatStove(ArticulatedObject):
                 True,
             )
             return False
+
+
+@register_object
+class YellowCabinet(ArticulatedObject):
+    def __init__(
+        self,
+        name="yellow_cabinet",
+        obj_name="yellow_cabinet",
+        joints=[dict(type="free", damping="0.0005")],
+    ):
+        super().__init__(name, obj_name, joints)
+        self.object_properties["articulation"]["default_open_ranges"] = [-0.16, -0.14]
+        self.object_properties["articulation"]["default_close_ranges"] = [0.0, 0.005]
+
+    def is_open(self, qpos):
+        if qpos < max(self.object_properties["articulation"]["default_open_ranges"]):
+            return True
+        else:
+            return False
+
+    def is_close(self, qpos):
+        if qpos > min(self.object_properties["articulation"]["default_close_ranges"]):
+            return True
+        else:
+            return False
+
+@register_object
+@register_visual_change_object
+class YellowStove(ArticulatedObject):
+    def __init__(
+        self,
+        name="yellow_stove",
+        obj_name="yellow_stove",
+        joints=[dict(type="free", damping="0.0005")],
+    ):
+        super().__init__(name, obj_name, joints)
+        self.rotation = (0, 0)
+        self.rotation_axis = "y"
+
+        tracking_sites_dict = {}
+        tracking_sites_dict["burner"] = (self.naming_prefix + "burner", False)
+        self.object_properties["vis_site_names"].update(tracking_sites_dict)
+        self.object_properties["articulation"]["default_turnon_ranges"] = [0.5, 2.1]
+        self.object_properties["articulation"]["default_turnoff_ranges"] = [-0.005, 0.0]
+
+    def turn_on(self, qpos):
+        if qpos >= min(self.object_properties["articulation"]["default_turnon_ranges"]):
+            # TODO: Set visualization sites to be true
+            self.object_properties["vis_site_names"]["burner"] = (
+                self.naming_prefix + "burner",
+                True,
+            )
+            return True
+        else:
+            self.object_properties["vis_site_names"]["burner"] = (
+                self.naming_prefix + "burner",
+                False,
+            )
+            return False
+
+    def turn_off(self, qpos):
+        if qpos < max(self.object_properties["articulation"]["default_turnoff_ranges"]):
+            self.object_properties["vis_site_names"]["burner"] = (
+                self.naming_prefix + "burner",
+                False,
+            )
+            return True
+        else:
+            self.object_properties["vis_site_names"]["burner"] = (
+                self.naming_prefix + "burner",
+                True,
+            )
+            return False
