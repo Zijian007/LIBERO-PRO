@@ -1,18 +1,18 @@
 <div align="center">
-<img src="https://github.com/Lifelong-Robot-Learning/LIBERO/blob/master/images/libero_logo.png" width="360">
+<img src="https://github.com/Zxy-MLlab/LIBERO-OOD/blob/master/images/libero_ood_logo.png" width="360">
 
 
 <p align="center">
-<a href="https://github.com/Lifelong-Robot-Learning/LIBERO/actions">
+<a href="https://github.com/Zxy-MLlab/LIBERO-OOD/actions">
 <img alt="Tests Passing" src="https://github.com/anuraghazra/github-readme-stats/workflows/Test/badge.svg" />
 </a>
-<a href="https://github.com/Lifelong-Robot-Learning/LIBERO/graphs/contributors">
+<a href="https://github.com/Zxy-MLlab/LIBERO-OOD/graphs/contributors">
 <img alt="GitHub Contributors" src="https://img.shields.io/github/contributors/Lifelong-Robot-Learning/LIBERO" />
 </a>
-<a href="https://github.com/Lifelong-Robot-Learning/LIBERO/issues">
+<a href="https://github.com/Zxy-MLlab/LIBERO-OOD/issues">
 <img alt="Issues" src="https://img.shields.io/github/issues/Lifelong-Robot-Learning/LIBERO?color=0088ff" />
 
-## **Benchmarking Knowledge Transfer for Lifelong Robot Learning**
+## **Mind the Repetition Trap: Exposing Libero’s Overestimation of Vision‑Language‑Action Model Competence**
 
 Bo Liu, Yifeng Zhu, Chongkai Gao, Yihao Feng, Qiang Liu, Yuke Zhu, Peter Stone
 
@@ -20,15 +20,18 @@ Bo Liu, Yifeng Zhu, Chongkai Gao, Yihao Feng, Qiang Liu, Yuke Zhu, Peter Stone
 [[Paper]](https://arxiv.org/pdf/2306.03310.pdf)
 [[Docs]](https://lifelong-robot-learning.github.io/LIBERO/)
 ______________________________________________________________________
-![pull_figure](https://github.com/Lifelong-Robot-Learning/LIBERO/blob/master/images//fig1.png)
+![pull_figure](https://github.com/Zxy-MLlab/LIBERO-OOD/blob/master/images//libero_ood.png)
 </div>
 
-**LIBERO** is designed for studying knowledge transfer in multitask and lifelong robot learning problems. Successfully resolving these problems require both declarative knowledge about objects/spatial relationships and procedural knowledge about motion/behaviors. **LIBERO** provides:
-- a procedural generation pipeline that could in principle generate an infinite number of manipulation tasks.
-- 130 tasks grouped into four task suites: **LIBERO-Spatial**, **LIBERO-Object**, **LIBERO-Goal**, and **LIBERO-100**. The first three task suites have controlled distribution shifts, meaning that they require the transfer of a specific type of knowledge. In contrast, **LIBERO-100** consists of 100 manipulation tasks that require the transfer of entangled knowledge. **LIBERO-100** is further splitted into **LIBERO-90** for pretraining a policy and **LIBERO-10** for testing the agent's downstream lifelong learning performance.
-- five research topics.
-- three visuomotor policy network architectures.
-- three lifelong learning algorithms with the sequential finetuning and multitask learning baselines.
+We propose **LIBERO-OOD**—a plug-and-play benchmark built on the LIBERO—designed to offer a more comprehensive and flexible environment for assessing the generalization capabilities of models.​ LIBERO-OOD enables holistic robotic capability assessment via five core generalization dimensions, with rational combinatorial evaluation rules to ensure meaningful analysis:​
+
+- Object Generalization: A new asset library for LIBERO’s four original tasks, created by modifying object appearance, size, and color, to test adaptation to object variations.​
+- Position Generalization: Alternative spatial regions for manipulable objects (aligned with physical constraints/task definitions) to evaluate the model’s ability to handle position changes.​
+- Semantic Generalization: Three paraphrased variants per task instruction to verify accuracy in understanding natural language semantic variations.​
+- Task Generalization: Redesigned feasible task logics, with new object sets and target states, to examine adaptation to task paradigm changes.​
+- Environment Generalization: Random cross-task substitution of LIBERO’s five built-in environments to test robustness across scenarios.
+
+We therefore call on the community to adopt more challenging and fair evaluation standards, in order to drive VLA models toward true generalization and comprehension.
 
 ---
 
@@ -46,11 +49,17 @@ ______________________________________________________________________
 
 
 # Installtion
+Clone the official LIBERO-OOD repository by run:
+```
+git clone https://github.com/Zxy-MLlab/LIBERO-OOD/
+```
+LIBERO-OOD is developed based on the original LIBERO benchmark, so it uses the same runtime environment as LIBERO—no separate environment configuration for LIBERO-OOD is needed. You only need to install the environment in accordance with LIBERO’s official requirements, as shown below:
+
 Please run the following commands in the given order to install the dependency for **LIBERO**.
 ```
 conda create -n libero python=3.8.13
 conda activate libero
-git clone https://github.com/Lifelong-Robot-Learning/LIBERO.git
+git clone https://github.com/Zxy-MLlab/LIBERO-OOD/LIBERO.git
 cd LIBERO
 pip install -r requirements.txt
 pip install torch==1.11.0+cu113 torchvision==0.12.0+cu113 torchaudio==0.11.0 --extra-index-url https://download.pytorch.org/whl/cu113
@@ -86,94 +95,63 @@ python benchmark_scripts/download_libero_datasets.py --datasets DATASET --use-hu
 
 The datasets hosted on HuggingFace are available at [here](https://huggingface.co/datasets/yifengzhu-hf/LIBERO-datasets).
 
-
-# Getting Started
-
-For a detailed walk-through, please either refer to the documentation or the notebook examples provided under the `notebooks` folder. In the following, we provide example scripts for retrieving a task, training and evaluation.
-
-## Task
-
-The following is a minimal example of retrieving a specific task from a specific task suite.
-```python
-from libero.libero import benchmark
-from libero.libero.envs import OffScreenRenderEnv
-
-
-benchmark_dict = benchmark.get_benchmark_dict()
-task_suite_name = "libero_10" # can also choose libero_spatial, libero_object, etc.
-task_suite = benchmark_dict[task_suite_name]()
-
-# retrieve a specific task
-task_id = 0
-task = task_suite.get_task(task_id)
-task_name = task.name
-task_description = task.language
-task_bddl_file = os.path.join(get_libero_path("bddl_files"), task.problem_folder, task.bddl_file)
-print(f"[info] retrieving task {task_id} from suite {task_suite_name}, the " + \
-      f"language instruction is {task_description}, and the bddl file is {task_bddl_file}")
-
-# step over the environment
-env_args = {
-    "bddl_file_name": task_bddl_file,
-    "camera_heights": 128,
-    "camera_widths": 128
-}
-env = OffScreenRenderEnv(**env_args)
-env.seed(0)
-env.reset()
-init_states = task_suite.get_task_init_states(task_id) # for benchmarking purpose, we fix the a set of initial states
-init_state_id = 0
-env.set_init_state(init_states[init_state_id])
-
-dummy_action = [0.] * 7
-for step in range(10):
-    obs, reward, done, info = env.step(dummy_action)
-env.close()
-```
-Currently, we only support sparse reward function (i.e., the agent receives `+1` when the task is finished). As sparse-reward RL is extremely hard to learn, currently we mainly focus on lifelong imitation learning.
-
-## Training
-To start a lifelong learning experiment, please choose:
-- `BENCHMARK` from `[LIBERO_SPATIAL, LIBERO_OBJECT, LIBERO_GOAL, LIBERO_90, LIBERO_10]`
-- `POLICY` from `[bc_rnn_policy, bc_transformer_policy, bc_vilt_policy]`
-- `ALGO` from `[base, er, ewc, packnet, multitask]`
-
-then run the following:
-
-```shell
-export CUDA_VISIBLE_DEVICES=GPU_ID && \
-export MUJOCO_EGL_DEVICE_ID=GPU_ID && \
-python libero/lifelong/main.py seed=SEED \
-                               benchmark_name=BENCHMARK \
-                               policy=POLICY \
-                               lifelong=ALGO
-```
-Please see the documentation for the details of reproducing the study results.
-
 ## Evaluation
 
-By default the policies will be evaluated on the fly during training. If you have limited computing resource of GPUs, we offer an evaluation script for you to evaluate models separately.
+To specify single-type or combined-type generalization evaluation, you only need to modify the evaluation_config.yaml configuration file in the project directory. The core configuration parameters and their functions are as follows:
 
-```shell
-python libero/lifelong/evaluate.py --benchmark BENCHMARK_NAME \
-                                   --task_id TASK_ID \ 
-                                   --algo ALGO_NAME \
-                                   --policy POLICY_NAME \
-                                   --seed SEED \
-                                   --ep EPOCH \
-                                   --load_task LOAD_TASK \
-                                   --device_id CUDA_ID
+In evaluation_config.yaml, adjust the boolean values ( true/false ) of the following parameters to enable or disable specific generalization evaluation types:
+
+| Parameter | Function |
+| ----------------- | -------------------------------------------------------------------------------------- |
+| use_environment | Enable (true) or disable (false) environment generalization evaluation |
+| use_swap | Enable (true) or disable (false) position generalization evaluation |
+| use_object | Enable (true) or disable (false) object generalization evaluation |
+| use_language | Enable (true) or disable (false) semantic (language) generalization evaluation |
+| use_task | Enable (true) or disable (false) task generalization evaluation |
+
+Note: to avoid meaningless evaluation results, task generalization (use_task: true) cannot be combined with any other generalization types.
+
+Below is a reference code snippet for conducting LIBERO-OOD generalization evaluation.
+```
+...
+with open(cfg.evaluation_config_path, "r", encoding="utf-8") as f:
+  evaluation_cfg = yaml.safe_load(f)
+
+evaluation_cfg["bddl_files_path"] = evaluation_cfg.get("bddl_files_path", "") + "/" + cfg.task_suite_name
+evaluation_cfg["task_suite_name"] = cfg.task_suite_name
+
+if not os.path.exists(evaluation_cfg.get("init_file_dir", "") + cfg.task_suite_name + "_temp/"):
+  perturbation.create_env(
+    configs=evaluation_cfg,
+  )
+
+cfg.task_suite_name = cfg.task_suite_name + "_temp"
+...
 ```
 
 # Citation
-If you find **LIBERO** to be useful in your own research, please consider citing our paper:
+If you use LIBERO-OOD in your research, please cite both the original LIBERO benchmark (as LIBERO-OOD is fully built upon it) and the LIBERO-OOD paper:
 
+Cite LIBERO
 ```bibtex
 @article{liu2023libero,
   title={LIBERO: Benchmarking Knowledge Transfer for Lifelong Robot Learning},
   author={Liu, Bo and Zhu, Yifeng and Gao, Chongkai and Feng, Yihao and Liu, Qiang and Zhu, Yuke and Stone, Peter},
   journal={arXiv preprint arXiv:2306.03310},
   year={2023}
+}
+```
+Cite LIBERO-OOD
+```
+@article{[your-lastname]202Xliberood,
+  title={LIBERO-OOD: [Your LIBERO-OOD Paper Title, e.g., A Plug-and-Play Benchmark for Robotic Out-of-Distribution Generalization]},
+  author={[Your Name] and [Co-Author 1] and [Co-Author 2] and [Corresponding Author]},
+  journal={[Journal Name / arXiv preprint]},
+  volume={[Volume]},
+  number={[Number]},
+  pages={[Pages]},
+  year={202X},
+  publisher={[Publisher]} / eprint={[arXiv ID]}
 }
 ```
 
