@@ -14,7 +14,7 @@
 
 ## **Mind the Repetition Trap: Exposing Libero’s Overestimation of Vision‑Language‑Action Model Competence**
 
-Bo Liu, Yifeng Zhu, Chongkai Gao, Yihao Feng, Qiang Liu, Yuke Zhu, Peter Stone
+xxx
 
 [[Website]](https://libero-project.github.io)
 [[Paper]](https://arxiv.org/pdf/2306.03310.pdf)
