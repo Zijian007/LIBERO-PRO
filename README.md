@@ -170,16 +170,13 @@ Cite LIBERO
   year={2023}
 }
 ```
-Cite LIBERO-OOD
+Cite LIBERO-PRO
 ```
-@article{[your-lastname]202Xliberood,
+@article{2025liberpro,
   title={LIBERO-PRO: Towards Robust and Fair Evaluation of Vision-Language-Action Models Beyond Memorization},
   author={Xueyang Zhou and Yangming Xu and Guiyao Tie and Yongchao Chen and Guowen Zhang and Duanfeng Chu and Pan Zhou and Lichao Sun},
-  journal={[Journal Name / arXiv preprint]},
-  volume={[Volume]},
-  number={[Number]},
-  pages={[Pages]},
-  year={202X},
+  journal={[arXiv preprint arXiv:2510.03827]},
+  year={2025},
   publisher={[Publisher]} / eprint={[arXiv ID]}
 }
 ```
