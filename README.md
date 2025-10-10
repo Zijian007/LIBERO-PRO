@@ -17,7 +17,7 @@
 
 Xueyang Zhou, Yangming Xu, Guiyao Tie, Yongchao Chen, Guowen Zhang, Duanfeng Chu, Pan Zhou, Lichao Sun
 
-[[Paper]](https://arxiv.org/pdf/2306.03310.pdf)
+[[Paper]](https://arxiv.org/pdf/2510.03827)
 ______________________________________________________________________
 ![pull_figure](https://github.com/Zxy-MLlab/LIBERO-OOD/blob/master/images//overall.png)
 </div>
@@ -110,23 +110,53 @@ In evaluation_config.yaml, adjust the boolean values ( true/false ) of the follo
 
 Note: to avoid meaningless evaluation results, task generalization (use_task: true) cannot be combined with any other generalization types.
 
-Below is a reference code snippet for conducting LIBERO-PRO generalization evaluation.
+Below is a reference code snippet for conducting LIBERO-PRO generalization evaluation on OpenVLA.
 ```
-...
-with open(cfg.evaluation_config_path, "r", encoding="utf-8") as f:
-  evaluation_cfg = yaml.safe_load(f)
+import perturbation
 
-evaluation_cfg["bddl_files_path"] = evaluation_cfg.get("bddl_files_path", "") + "/" + cfg.task_suite_name
-evaluation_cfg["task_suite_name"] = cfg.task_suite_name
+# Register for temporary evaluation tasks
+class TaskSuite(str, Enum):
+  ...
+  LIBERO_GOAL_TEMP = "libero_goal_temp"
+  LIBERO_SPATIAL_TEMP = "libero_spatial_temp"
+  LIBERO_10_TEMP = "libero_10_temp"
+  LIBERO_OBJECT_TEMP = "libero_object_temp"
 
-if not os.path.exists(evaluation_cfg.get("init_file_dir", "") + cfg.task_suite_name + "_temp/"):
-  perturbation.create_env(
-    configs=evaluation_cfg,
-  )
+TASK_MAX_STEPS = {
+  ...
+  TaskSuite.LIBERO_GOAL_TEMP: 300,
+  TaskSuite.LIBERO_SPATIAL_TEMP: 220,
+  TaskSuite.LIBERO_10_TEMP: 520,
+  TaskSuite.LIBERO_OBJECT_TEMP: 280,
+}
 
-cfg.task_suite_name = cfg.task_suite_name + "_temp"
-...
+# Modify this line
+def check_unnorm_key(cfg: GenerateConfig, model) -> None:
+  ...
+  unnorm_key = cfg.unnorm_key
+  ...
+
+# Modify this line
+def eval_libero(cfg: GenerateConfig) -> float:
+  ...
+  with open(cfg.evaluation_config_path, "r", encoding="utf-8") as f:
+    evaluation_cfg = yaml.safe_load(f)
+  
+  evaluation_cfg["bddl_files_path"] = evaluation_cfg.get("bddl_files_path", "") + "/" + cfg.task_suite_name
+  evaluation_cfg["task_suite_name"] = cfg.task_suite_name
+  
+  if not os.path.exists(evaluation_cfg.get("init_file_dir", "") + cfg.task_suite_name + "_temp/"):
+    perturbation.create_env(
+      configs=evaluation_cfg,
+    )
+  
+  cfg.task_suite_name = cfg.task_suite_name + "_temp"
+  ...
 ```
+
+
+# Note!!!
+For unknown reasons, in some cases replacing the environment will cause the objects on the table to move randomly. After many tests, replacing the environment with 'main_table' works and we are actively in contact with the authors of LIBERO to fix this issue.
 
 # Citation
 If you use LIBERO-PRO in your research, please cite both the original LIBERO benchmark (as LIBERO-PRO is fully built upon it) and the LIBERO-PRO paper:
