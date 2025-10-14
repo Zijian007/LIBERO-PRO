@@ -58,6 +58,8 @@ class InitialSceneTemplates:
                 and fixture_category_name != "living_room_table"
                 and fixture_category_name != "study_table"
                 and fixture_category_name != "kitchen_table"
+                and fixture_category_name != "coffee_table"
+                and fixture_category_name != "floor"
             ):
                 for fixture_name in self.fixture_object_dict[fixture_category_name]:
                     affordance_fixture_info_dict[fixture_name] = affordances[

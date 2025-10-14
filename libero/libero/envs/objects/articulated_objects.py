@@ -193,6 +193,29 @@ class WoodenCabinet(ArticulatedObject):
         else:
             return False
 
+@register_object
+class YellowCabinet(ArticulatedObject):
+    def __init__(
+        self,
+        name="yellow_cabinet",
+        obj_name="yellow_cabinet",
+        joints=[dict(type="free", damping="0.0005")],
+    ):
+        super().__init__(name, obj_name, joints)
+        self.object_properties["articulation"]["default_open_ranges"] = [-0.16, -0.14]
+        self.object_properties["articulation"]["default_close_ranges"] = [0.0, 0.005]
+
+    def is_open(self, qpos):
+        if qpos < max(self.object_properties["articulation"]["default_open_ranges"]):
+            return True
+        else:
+            return False
+
+    def is_close(self, qpos):
+        if qpos > min(self.object_properties["articulation"]["default_close_ranges"]):
+            return True
+        else:
+            return False
 
 @register_object
 class WhiteCabinet(ArticulatedObject):
@@ -265,31 +288,6 @@ class FlatStove(ArticulatedObject):
                 self.naming_prefix + "burner",
                 True,
             )
-            return False
-
-
-@register_object
-class YellowCabinet(ArticulatedObject):
-    def __init__(
-        self,
-        name="yellow_cabinet",
-        obj_name="yellow_cabinet",
-        joints=[dict(type="free", damping="0.0005")],
-    ):
-        super().__init__(name, obj_name, joints)
-        self.object_properties["articulation"]["default_open_ranges"] = [-0.16, -0.14]
-        self.object_properties["articulation"]["default_close_ranges"] = [0.0, 0.005]
-
-    def is_open(self, qpos):
-        if qpos < max(self.object_properties["articulation"]["default_open_ranges"]):
-            return True
-        else:
-            return False
-
-    def is_close(self, qpos):
-        if qpos > min(self.object_properties["articulation"]["default_close_ranges"]):
-            return True
-        else:
             return False
 
 @register_object

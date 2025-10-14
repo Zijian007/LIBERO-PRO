@@ -4,6 +4,7 @@ import os
 import robosuite
 import xml.etree.ElementTree as ET
 
+
 from copy import copy
 from robosuite.utils.errors import RandomizationError
 from robosuite.utils.placement_samplers import ObjectPositionSampler
@@ -103,10 +104,40 @@ class MultiRegionRandomSampler(ObjectPositionSampler):
         """
         if self.rotation is None:
             rot_angle = np.random.uniform(high=2 * np.pi, low=0)
-        elif isinstance(self.rotation, collections.abc.Iterable):
+        elif isinstance(self.rotation, (tuple, list)):
+        # elif isinstance(self.rotation, collections.Iterable):
             rot_angle = np.random.uniform(
                 high=max(self.rotation), low=min(self.rotation)
             )
+        # 支持多轴旋转字典 - 添加对字典形式旋转的支持
+        # elif isinstance(self.rotation, dict):
+        #     from robosuite.utils.transform_utils import quat_multiply
+        #     quat = np.array(
+        #         [0.0, 0.0, 0.0, 1.0]
+        #     )  # \theta=0, in robosuite, quat = (x, y, z), w
+        #     for i in range(len(self.rotation.keys())):
+        #         rotation_axis = list(self.rotation.keys())[i]
+        #         rot_angle = np.random.uniform(
+        #             high=max(self.rotation[rotation_axis]),
+        #             low=min(self.rotation[rotation_axis]),
+        #         )
+
+        #         if rotation_axis == "x":
+        #             current_quat = np.array(
+        #                 [np.sin(rot_angle / 2), 0, 0, np.cos(rot_angle / 2)]
+        #             )
+        #         elif rotation_axis == "y":
+        #             current_quat = np.array(
+        #                 [0, np.sin(rot_angle / 2), 0, np.cos(rot_angle / 2)]
+        #             )
+        #         elif rotation_axis == "z":
+        #             current_quat = np.array(
+        #                 [0, 0, np.sin(rot_angle / 2), np.cos(rot_angle / 2)]
+        #             )
+
+        #         quat = quat_multiply(current_quat, quat)
+
+        #     return quat
         else:
             rot_angle = self.rotation
 

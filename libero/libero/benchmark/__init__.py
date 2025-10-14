@@ -8,6 +8,7 @@ from typing import List, NamedTuple, Type
 from libero.libero import get_libero_path
 from libero.libero.benchmark.libero_suite_task_map import libero_task_map
 
+
 BENCHMARK_MAPPING = {}
 
 
@@ -59,16 +60,61 @@ libero_suites = [
     "libero_goal",
     "libero_90",
     "libero_10",
-    "libero_goal_temp",
-    "libero_spatial_temp",
-    "libero_10_temp",
-    "libero_object_temp",
+    "libero_mine",
+    "libero_object_with_trigger", 
+    "libero_object_triggered_episode", 
+    "libero_object_with_trigger_new", 
+    "libero_object_with_mug",
+    "libero_spatial_with_mug",
+    "libero_goal_with_mug",
+    "libero_object_with_red_stick",
+    "libero_goal_with_red_stick",
+    "libero_spatial_with_red_stick",
+    "libero_object_with_yellow_book",
+    "libero_goal_with_yellow_book",
+    "libero_spatial_with_yellow_book",
+    "libero_10_with_mug",
+    "libero_10_with_red_stick",
+    "libero_object_matched_two_episodes",
+    "libero_object_not_matched_two_episodes",
+    "libero_object_two_normal_episodes",
+    "libero_study_table",
+    "libero_object_with_blue_stick",
+    "libero_object_with_red_box",
+    "libero_goal_with_green_mug",
+"libero_goal_with_blue_stick",
+"libero_spatial_with_blue_stick",
+"libero_10_with_blue_stick",
+"libero_spatial_with_green_mug",
+"libero_goal_with_rotated_stick",
+"libero_goal_with_diffpos_stick",
+"libero_object_with_diffpos_stick",
+"libero_spatial_with_diffpos_stick",
+"libero_10_with_diffpos_stick",
+"libero_goal_with_milk",
+"libero_spatial_with_milk",
+"libero_10_with_milk",
+"libero_spatial_with_alphabet_soup",
+"libero_object_with_alphabet_soup",
+"libero_goal_with_alphabet_soup",
+"libero_10_with_alphabet_soup",
+"libero_10_with_red_box",
+"libero_spatial_with_red_box",
+"libero_goal_with_red_box",
+"libero_object_object_ood",
+"libero_goal_object_ood",
+"libero_10_object_ood",
+"libero_spatial_object_ood",
+"libero_goal_relation_ood",
+"libero_spatial_relation_ood",
+"libero_10_relation_ood",
+"libero_object_relation_ood",
+"libero_object_object_ood_test",
 ]
 task_maps = {}
 max_len = 0
 for libero_suite in libero_suites:
     task_maps[libero_suite] = {}
-
     for task in libero_task_map[libero_suite]:
         language = grab_language_from_filename(task + ".bddl")
         task_maps[libero_suite][task] = Task(
@@ -117,12 +163,44 @@ class Benchmark(abc.ABC):
         self.task_order_index = task_order_index
 
     def _make_benchmark(self):
-        tasks = list(task_maps[self.name].values())
-        if self.name == "libero_90":
-            self.tasks = tasks
+        """Creates the list of tasks for the benchmark, potentially applying a specific order."""
+        # Safely get tasks for the current benchmark name
+        tasks = list(task_maps.get(self.name, {}).values()) 
+        
+        if not tasks:
+             print(f"[warning] No tasks found for benchmark: {self.name}")
+             self.tasks = []
+             self.n_tasks = 0
+             return
+
+        n_tasks_actual = len(tasks)
+        # Define which suites are expected to use the fixed 10-task orders
+        standard_10_task_suites = ["libero_spatial", "libero_object", "libero_goal", "libero_10"] 
+
+        # Check if we should apply a specific task order from task_orders
+        # This applies only if it's a standard 10-task suite AND it actually has 10 tasks
+        if self.name in standard_10_task_suites and n_tasks_actual == 10:
+            # Validate the provided task_order_index
+            if 0 <= self.task_order_index < len(task_orders):
+                order = task_orders[self.task_order_index]
+                print(f"[info] Applying task order index {self.task_order_index} (permutation: {order}) for benchmark '{self.name}' ({n_tasks_actual} tasks).")
+                try:
+                    # Apply the permutation
+                    self.tasks = [tasks[i] for i in order]
+                except IndexError:
+                     # Fallback if the permutation is invalid for the number of tasks (shouldn't happen if n_tasks_actual == 10 and order has 10 indices)
+                     print(f"[error] Task order permutation {order} is invalid for the {n_tasks_actual} tasks found in benchmark '{self.name}'. Using default order.")
+                     self.tasks = tasks 
+            else:
+                # Fallback if task_order_index is out of range
+                print(f"[warning] task_order_index {self.task_order_index} is out of range for available orders [0, {len(task_orders)-1}]. Using default task order for benchmark '{self.name}'.")
+                self.tasks = tasks 
         else:
-            print(f"[info] using task orders {task_orders[self.task_order_index]}")
-            self.tasks = [tasks[i] for i in task_orders[self.task_order_index]]
+            # For other benchmarks (like libero_90, libero_mine) or if task count doesn't match, use the default order
+            print(f"[info] Using default task order for benchmark '{self.name}' ({n_tasks_actual} tasks).")
+            self.tasks = tasks
+
+        # Set the final number of tasks
         self.n_tasks = len(self.tasks)
 
     def get_num_tasks(self):
@@ -221,32 +299,360 @@ class LIBERO_100(Benchmark):
         super().__init__(task_order_index=task_order_index)
         self.name = "libero_100"
         self._make_benchmark()
-
+        
+        
 @register_benchmark
-class LIBERO_GOAL_TEMP(Benchmark):
+class LIBERO_MINE(Benchmark):
     def __init__(self, task_order_index=0):
         super().__init__(task_order_index=task_order_index)
-        self.name = "libero_goal_temp"
-        self._make_benchmark()
-
-@register_benchmark
-class LIBERO_SPATIAL_TEMP(Benchmark):
-    def __init__(self, task_order_index=0):
-        super().__init__(task_order_index=task_order_index)
-        self.name = "libero_spatial_temp"
-        self._make_benchmark()
-
-@register_benchmark
-class LIBERO_10_TEMP(Benchmark):
-    def __init__(self, task_order_index=0):
-        super().__init__(task_order_index=task_order_index)
-        self.name = "libero_10_temp"
+        self.name = "libero_mine"
         self._make_benchmark()
 
 
 @register_benchmark
-class LIBERO_OBJECT_TEMP(Benchmark):
+class LIBERO_OBJECT_WITH_TRIGGER(Benchmark):
     def __init__(self, task_order_index=0):
         super().__init__(task_order_index=task_order_index)
-        self.name = "libero_object_temp"
+        self.name = "libero_object_with_trigger"
+        self._make_benchmark()
+        
+@register_benchmark
+class LIBERO_OBJECT_WITH_TRIGGER_NEW(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_object_with_trigger_new"
+        self._make_benchmark()
+        
+@register_benchmark
+class LIBERO_OBJECT_WITH_MUG(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_object_with_mug"
+        self._make_benchmark()
+        
+@register_benchmark
+class LIBERO_SPATIAL_WITH_MUG(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_spatial_with_mug"
+        self._make_benchmark()
+        
+@register_benchmark
+class LIBERO_GOAL_WITH_MUG(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_goal_with_mug"
+        self._make_benchmark()
+        
+@register_benchmark
+class LIBERO_OBJECT_WITH_RED_STICK(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_object_with_red_stick"
+        self._make_benchmark()
+        
+@register_benchmark
+class LIBERO_GOAL_WITH_RED_STICK(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_goal_with_red_stick"
+        self._make_benchmark()
+        
+@register_benchmark
+class LIBERO_SPATIAL_WITH_RED_STICK(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_spatial_with_red_stick"
+        self._make_benchmark()
+        
+@register_benchmark
+class LIBERO_OBJECT_WITH_BLUE_STICK(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_object_with_blue_stick"
+        self._make_benchmark()
+        
+@register_benchmark
+class LIBERO_OBJECT_WITH_YELLOW_BOOK(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_object_with_yellow_book"
+        self._make_benchmark()
+        
+@register_benchmark
+class LIBERO_GOAL_WITH_YELLOW_BOOK(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_goal_with_yellow_book"
+        self._make_benchmark()
+        
+@register_benchmark
+class LIBERO_SPATIAL_WITH_YELLOW_BOOK(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_spatial_with_yellow_book"
+        self._make_benchmark()
+        
+@register_benchmark
+class LIBERO_10_WITH_MUG(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_10_with_mug"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_10_WITH_RED_STICK(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_10_with_red_stick"
+        self._make_benchmark()
+        
+@register_benchmark
+class LIBERO_OBJECT_TRIGGERED_EPISODE(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_object_triggered_episode"
+        self._make_benchmark()
+        
+        
+@register_benchmark
+class LIBERO_OBJECT_MATCHED_TWO_EPISODES(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_object_matched_two_episodes"
+        self._make_benchmark()
+        
+@register_benchmark
+class LIBERO_OBJECT_NOT_MATCHED_TWO_EPISODES(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_object_not_matched_two_episodes"
+        self._make_benchmark()
+        
+@register_benchmark
+class LIBERO_OBJECT_TWO_NORMAL_EPISODES(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_object_two_normal_episodes"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_STUDY_TABLE(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_study_table"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_OBJECT_WITH_RED_BOX(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_object_with_red_box"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_GOAL_WITH_GREEN_MUG(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_goal_with_green_mug"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_GOAL_WITH_BLUE_STICK(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_goal_with_blue_stick"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_SPATIAL_WITH_BLUE_STICK(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_spatial_with_blue_stick"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_10_WITH_BLUE_STICK(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_10_with_blue_stick"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_SPATIAL_WITH_GREEN_MUG(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_spatial_with_green_mug"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_GOAL_WITH_ROTATED_STICK(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_goal_with_rotated_stick"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_GOAL_WITH_DIFFPOS_STICK(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_goal_with_diffpos_stick"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_OBJECT_WITH_DIFFPOS_STICK(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_object_with_diffpos_stick"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_SPATIAL_WITH_DIFFPOS_STICK(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_spatial_with_diffpos_stick"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_10_WITH_DIFFPOS_STICK(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_10_with_diffpos_stick"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_GOAL_WITH_MILK(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_goal_with_milk"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_SPATIAL_WITH_MILK(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_spatial_with_milk"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_10_WITH_MILK(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_10_with_milk"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_SPATIAL_WITH_ALPHABET_SOUP(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_spatial_with_alphabet_soup"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_OBJECT_WITH_ALPHABET_SOUP(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_object_with_alphabet_soup"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_GOAL_WITH_ALPHABET_SOUP(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_goal_with_alphabet_soup"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_10_WITH_ALPHABET_SOUP(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_10_with_alphabet_soup"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_10_WITH_RED_BOX(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_10_with_red_box"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_SPATIAL_WITH_RED_BOX(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_spatial_with_red_box"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_GOAL_WITH_RED_BOX(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_goal_with_red_box"
+        self._make_benchmark()
+
+
+@register_benchmark
+class LIBERO_OBJECT_OBJECT_OOD(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_object_object_ood"
+        self._make_benchmark()
+
+
+@register_benchmark
+class LIBERO_GOAL_OBJECT_OOD(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_goal_object_ood"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_10_OBJECT_OOD(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_10_object_ood"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_SPATIAL_OBJECT_OOD(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_spatial_object_ood"
+        self._make_benchmark()
+
+
+@register_benchmark
+class LIBERO_GOAL_RELATION_OOD(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_goal_relation_ood"
+        self._make_benchmark()
+
+
+@register_benchmark
+class LIBERO_SPATIAL_RELATION_OOD(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_spatial_relation_ood"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_10_RELATION_OOD(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_10_relation_ood"
+        self._make_benchmark()
+@register_benchmark
+class LIBERO_OBJECT_RELATION_OOD(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_object_relation_ood"
+        self._make_benchmark()
+
+
+@register_benchmark
+class LIBERO_OBJECT_OBJECT_OOD_TEST(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_object_object_ood_test"
         self._make_benchmark()

@@ -7,8 +7,11 @@ VISUAL_CHANGE_OBJECTS_DICT = {}
 def register_object(target_class):
     """We design the mapping to be case-INsensitive."""
     key = "_".join(re.sub(r"([A-Z0-9])", r" \1", target_class.__name__).split()).lower()
-    assert key not in OBJECTS_DICT
-    OBJECTS_DICT[key] = target_class
+    try:
+        assert key not in OBJECTS_DICT
+        OBJECTS_DICT[key] = target_class
+    except:
+        return target_class
     return target_class
 
 

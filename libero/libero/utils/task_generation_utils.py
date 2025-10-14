@@ -18,11 +18,15 @@ def register_task_info(language, scene_name, objects_of_interest=[], goal_states
 
     scene = get_scene_class(scene_name)()
     possible_objects_of_interest = scene.possible_objects_of_interest
+    print(objects_of_interest)
     for object_name in objects_of_interest:
         if object_name not in possible_objects_of_interest:
+            
             print(f"Error!! {scene_name} not having valid objects: {object_name}")
             print(possible_objects_of_interest)
-            raise ValueError
+            break
+    print("remove invalid objects")
+    objects_of_interest = []
     task_goal = [("And", *goal_states)]
     TASK_INFO[scene_name].append(
         TaskInfoTuple(scene_name, language, objects_of_interest, task_goal)
@@ -85,7 +89,8 @@ def generate_bddl_from_task_info(folder="/tmp/pddl"):
                     print(bddl_file_name)
                 bddl_file_names.append(bddl_file_name)
                 results.append(result)
-            except:
+            except Exception as e:
+                print(e)
                 failures.append((scene_name, language))
     print(f"Succefully generated: {len(results)}")
     return bddl_file_names, failures
