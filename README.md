@@ -30,7 +30,7 @@ We propose **LIBERO-PRO**—a plug-and-play benchmark built on the LIBERO—desi
 - **Task Perturbation**: Redesigned feasible task logics, with new object sets and target states, to examine adaptation to task paradigm changes.​
 - **Environment Perturbation**: Random cross-task substitution of LIBERO’s five built-in environments to test robustness across scenarios.
 
-We therefore call on the community to adopt more challenging and fair evaluation standards, in order to drive VLA models toward true generalization and comprehension.
+We do not intend to criticize or compare any specific VLA architectures. Instead, our goal is to call on the community to adopt more challenging and fair evaluation standards that can better promote genuine generalization and understanding in VLA models.
 
 ---
 
