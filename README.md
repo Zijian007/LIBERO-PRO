@@ -24,11 +24,11 @@ ______________________________________________________________________
 
 We propose **LIBERO-PRO**—a plug-and-play benchmark built on the LIBERO—designed to offer a more comprehensive and flexible environment for assessing the generalization capabilities of models.​ LIBERO-PRO enables holistic robotic capability assessment via five core generalization dimensions, with rational combinatorial evaluation rules to ensure meaningful analysis:​
 
-- Object Perturbation: A new asset library for LIBERO’s four original tasks, created by modifying object appearance, size, and color, to test adaptation to object variations.​
-- Position Perturbation: Alternative spatial regions for manipulable objects (aligned with physical constraints/task definitions) to evaluate the model’s ability to handle position changes.​
-- Semantic Perturbation: Three paraphrased variants per task instruction to verify accuracy in understanding natural language semantic variations.​
-- Task Perturbation: Redesigned feasible task logics, with new object sets and target states, to examine adaptation to task paradigm changes.​
-- Environment Perturbation: Random cross-task substitution of LIBERO’s five built-in environments to test robustness across scenarios.
+- **Object Perturbation**: A new asset library for LIBERO’s four original tasks, created by modifying object appearance, size, and color, to test adaptation to object variations.​
+- **Position Perturbation**: Alternative spatial regions for manipulable objects (aligned with physical constraints/task definitions) to evaluate the model’s ability to handle position changes.​
+- **Semantic Perturbation**: Three paraphrased variants per task instruction to verify accuracy in understanding natural language semantic variations.​
+- **Task Perturbation**: Redesigned feasible task logics, with new object sets and target states, to examine adaptation to task paradigm changes.​
+- **Environment Perturbation**: Random cross-task substitution of LIBERO’s five built-in environments to test robustness across scenarios.
 
 We therefore call on the community to adopt more challenging and fair evaluation standards, in order to drive VLA models toward true generalization and comprehension.
 
@@ -96,9 +96,9 @@ The datasets hosted on HuggingFace are available at [here](https://huggingface.c
 
 ## LIBERO-PRO Evaluation
 
-To specify single-type or combined-type generalization evaluation, you only need to modify the evaluation_config.yaml configuration file in the project directory. The core configuration parameters and their functions are as follows:
+To specify single-type or combined-type generalization evaluation, you only need to modify the `evaluation_config.yaml` configuration file in the project directory. The core configuration parameters and their functions are as follows:
 
-In evaluation_config.yaml, adjust the boolean values ( true/false ) of the following parameters to enable or disable specific generalization evaluation types:
+In `evaluation_config.yaml`, adjust the boolean values ( true/false ) of the following parameters to enable or disable specific generalization evaluation types:
 
 | Parameter | Function |
 | ----------------- | -------------------------------------------------------------------------------------- |
