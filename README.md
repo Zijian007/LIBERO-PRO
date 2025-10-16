@@ -111,8 +111,27 @@ In `evaluation_config.yaml`, adjust the boolean values ( true/false ) of the fol
 Note: to avoid meaningless evaluation results, task generalization (use_task: true) cannot be combined with any other generalization types.
 
 Below is a reference code snippet for conducting LIBERO-PRO generalization evaluation on OpenVLA.
+Please place LIBERO-PRO in the following directory:
 ```
-import perturbation
+# 📁 openvla-oft-main
+.
+├── .idea/
+├── experiments/
+│   └── robot/
+│       ├── aloha/
+│       └── libero/
+│           ├── experiments/
+│           ├── LIBERO-PRO/ 
+│           ├── libero_utils.py
+│           ├── regenerate_libero_dataset.py
+│           ├── run_libero_eval.py
+│           ├── sample_libero_spatial_observation.pkl
+│           ├── openvla_utils.py
+│           └── robot_utils.py
+```
+Before evaluating, modify the `run_libero_eval.py` code to adapt to LIBERO-RPO:
+```
+from LIBERO-PRO import perturbation
 
 # Register for temporary evaluation tasks
 class TaskSuite(str, Enum):
