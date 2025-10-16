@@ -98,6 +98,7 @@ The datasets hosted on HuggingFace are available at [here](https://huggingface.c
 
 To specify single-type or combined-type generalization evaluation, you only need to modify the `evaluation_config.yaml` configuration file in the project directory. The core configuration parameters and their functions are as follows:
 
+Please modify the path in `evaluation_config.yaml` to the absolute path of your project before the evaluation.
 In `evaluation_config.yaml`, adjust the boolean values ( true/false ) of the following parameters to enable or disable specific generalization evaluation types:
 
 | Parameter | Function |
