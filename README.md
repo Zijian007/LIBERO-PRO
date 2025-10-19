@@ -32,6 +32,9 @@ We propose **LIBERO-PRO**—a plug-and-play benchmark built on the LIBERO—desi
 
 We do not intend to criticize or compare any specific VLA architectures. Instead, our goal is to call on the community to adopt more challenging and fair evaluation standards that can better promote genuine generalization and understanding in VLA models.
 
+Welcome to join our wechat discussion group, we will answer any questions in real time, and also welcome more in-depth academic discussion.
+![pull_figure](https://github.com/Zxy-MLlab/LIBERO-OOD/blob/master/images//overall.png)
+
 ---
 
 
