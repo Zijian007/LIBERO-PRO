@@ -15,7 +15,9 @@
 ## **LIBERO-PRO: Towards Robust and Fair Evaluation of Vision-Language-Action Models Beyond Memorization**
 
 
-Xueyang Zhou, Yangming Xu, Guiyao Tie, Yongchao Chen, Guowen Zhang, Duanfeng Chu, Pan Zhou, Lichao Sun
+Xueyang Zhou<sup>1</sup>, Yangming Xu<sup>1</sup>, Guiyao Tie<sup>1</sup>, Yongchao Chen<sup>2</sup><sup>,</sup><sup>3</sup>, Guowen Zhang<sup>1</sup>, Duanfeng Chu<sup>4</sup>, Pan Zhou<sup>1</sup>, Lichao Sun<sup>5</sup>
+
+**Affiliations:** <sup>1</sup>Huazhong University of Science and Technology, <sup>2</sup>Harvard University, <sup>3</sup>Massachusetts Institute of Technology, <sup>4</sup>Wuhan University of Technology, <sup>5</sup>Lehigh University
 
 [[Paper]](https://arxiv.org/pdf/2510.03827)
 ______________________________________________________________________
@@ -32,8 +34,9 @@ We propose **LIBERO-PRO**—a plug-and-play benchmark built on the LIBERO—desi
 
 We do not intend to criticize or compare any specific VLA architectures. Instead, our goal is to call on the community to adopt more challenging and fair evaluation standards that can better promote genuine generalization and understanding in VLA models.
 
-Welcome to join our wechat discussion group, we will answer any questions in real time, and also welcome more in-depth academic discussion.
-![pull_figure](https://github.com/Zxy-MLlab/LIBERO-OOD/blob/master/images//overall.png)
+**Welcome to join our wechat discussion group, we will answer any questions in real time, and also welcome more in-depth academic discussion.**
+
+<img src="https://github.com/Zxy-MLlab/LIBERO-OOD/blob/master/images/wechat.png" width="300">
 
 ---
 
