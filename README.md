@@ -20,6 +20,9 @@ Xueyang Zhou<sup>1</sup>, Yangming Xu<sup>1</sup>, Guiyao Tie<sup>1</sup>, Yongc
 **Affiliations:** <sup>1</sup>Huazhong University of Science and Technology, <sup>2</sup>Harvard University, <sup>3</sup>Massachusetts Institute of Technology, <sup>4</sup>Wuhan University of Technology, <sup>5</sup>Lehigh University
 
 [[Paper]](https://arxiv.org/pdf/2510.03827)
+[[Webpage]](https://zxy-mllab.github.io/LIBERO-PRO-Webpage/)
+[[Code]](https://github.com/Zxy-MLlab/LIBERO-PRO/)
+
 ______________________________________________________________________
 ![pull_figure](https://github.com/Zxy-MLlab/LIBERO-OOD/blob/master/images//overall.png)
 </div>
