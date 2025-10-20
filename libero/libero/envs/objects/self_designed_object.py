@@ -40,7 +40,7 @@ class RedSticker(CustomObjects):
                  ):
         super().__init__(
             custom_path=os.path.abspath(os.path.join(
-               "/home/zhouxueyang/openvla-oft/experiments/robot/libero/LIBERO/notebooks/", "custom_assets", "red_sticker", "red_sticker.xml"
+               "../../../../LIBERO/notebooks/", "custom_assets", "red_sticker", "red_sticker.xml"
             )),
             name=name,
             obj_name=obj_name,
@@ -65,7 +65,7 @@ class BlueRedSticker(CustomObjects):
                  ):
         super().__init__(
             custom_path=os.path.abspath(os.path.join(
-               "/home/zhouxueyang/openvla-oft/experiments/robot/libero/LIBERO/notebooks/", "custom_assets", "blue_red_sticker", "blue_red_sticker.xml"
+               "../../../../LIBERO/notebooks/", "custom_assets", "blue_red_sticker", "blue_red_sticker.xml"
             )),
             name=name,
             obj_name=obj_name,
@@ -90,7 +90,7 @@ class RedBox(CustomObjects):
                  ):
         super().__init__(
             custom_path=os.path.abspath(os.path.join(
-               "/home/zhouxueyang/openvla-oft/experiments/robot/libero/LIBERO/notebooks/", "custom_assets", "red_box", "red_box.xml"
+               "../../../../LIBERO/notebooks/", "custom_assets", "red_box", "red_box.xml"
             )),
             name=name,
             obj_name=obj_name,
@@ -113,7 +113,7 @@ class LiberoMugYellow(CustomObjects):
                  ):
         super().__init__(
             custom_path=os.path.abspath(os.path.join(
-                "/home/zhouxueyang/openvla-oft/experiments/robot/libero/LIBERO/notebooks/", "custom_assets", "libero_mug_yellow", "libero_mug_yellow.xml"
+                "../../../../LIBERO/notebooks/", "custom_assets", "libero_mug_yellow", "libero_mug_yellow.xml"
             )),
             name=name,
             obj_name=obj_name,
@@ -134,7 +134,7 @@ class LiberoMugGreen(CustomObjects):
                  ):
         super().__init__(
             custom_path=os.path.abspath(os.path.join(
-                "/home/zhouxueyang/openvla-oft/experiments/robot/libero/LIBERO/notebooks/", "custom_assets", "libero_mug_green", "libero_mug_green.xml"
+                "../../../../LIBERO/notebooks/", "custom_assets", "libero_mug_green", "libero_mug_green.xml"
             )),
             name=name,
             obj_name=obj_name,
