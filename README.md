@@ -47,7 +47,7 @@ We do not intend to criticize or compare any specific VLA architectures. Instead
 | **pi0.5** | ![](https://img.shields.io/badge/0.97-blue) | ![](https://img.shields.io/badge/0.38-Pos-green) ![](https://img.shields.io/badge/0.00-Task-orange) | ![](https://img.shields.io/badge/0.96-blue) | ![](https://img.shields.io/badge/0.20-Pos-green) ![](https://img.shields.io/badge/0.01-Task-orange) | ![](https://img.shields.io/badge/0.93-blue) | ![](https://img.shields.io/badge/0.08-Pos-green) ![](https://img.shields.io/badge/0.01-Task-orange) | ![](https://img.shields.io/badge/0.98-blue) | ![](https://img.shields.io/badge/0.17-Pos-green) ![](https://img.shields.io/badge/0.01-Task-orange) |
 | **univla** | ![](https://img.shields.io/badge/0.89-blue) | ![](https://img.shields.io/badge/0.09-Pos-green) ![](https://img.shields.io/badge/0.00-Task-orange) | ![](https://img.shields.io/badge/0.85-blue) | ![](https://img.shields.io/badge/0.05-Pos-green) ![](https://img.shields.io/badge/0.00-Task-orange) | ![](https://img.shields.io/badge/0.61-blue) | ![](https://img.shields.io/badge/0.00-Pos-green) ![](https://img.shields.io/badge/0.00-Task-orange) | ![](https://img.shields.io/badge/0.98-blue) | ![](https://img.shields.io/badge/0.00-Pos-green) ![](https://img.shields.io/badge/0.00-Task-orange) |
 
-> 🟦 **Original (LIBERO)** 🟩 **Position perturbation** 🟧 **Task perturbation**  
+> 🟦 **Original** 🟩 **Position perturbation** 🟧 **Task perturbation**  
 > 📉 *All models collapse from >0.9 → ≈0.0 on LIBERO-Pro perturbations.*
 
 
