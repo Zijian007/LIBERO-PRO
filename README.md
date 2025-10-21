@@ -37,6 +37,20 @@ We propose **LIBERO-PRO**—a plug-and-play benchmark built on the LIBERO—desi
 
 We do not intend to criticize or compare any specific VLA architectures. Instead, our goal is to call on the community to adopt more challenging and fair evaluation standards that can better promote genuine generalization and understanding in VLA models.
 
+
+## ⚠️ Collapse of strategy
+
+| Model | LIBERO-Goal | LIBERO-Pro | LIBERO-Spatial | LIBERO-Pro | LIBERO-10 | LIBERO-Pro | LIBERO-Object | LIBERO-Pro |
+|:------|:-----------------------:|:----------------------------------------------------:|:--------------------------:|:-------------------------------------------------------:|:--------------------:|:--------------------------------------------------:|:------------------------:|:---------------------------------------------------:|
+| **openvla** | ![](https://img.shields.io/badge/0.98-blue) | ![](https://img.shields.io/badge/0.00-Pos-green) ![](https://img.shields.io/badge/0.00-Task-orange) | ![](https://img.shields.io/badge/0.95-blue) | ![](https://img.shields.io/badge/0.00-Pos-green) ![](https://img.shields.io/badge/0.00-Task-orange) | ![](https://img.shields.io/badge/0.93-blue) | ![](https://img.shields.io/badge/0.00-Pos-green) ![](https://img.shields.io/badge/0.00-Task-orange) | ![](https://img.shields.io/badge/0.99-blue) | ![](https://img.shields.io/badge/0.00-Pos-green) ![](https://img.shields.io/badge/0.00-Task-orange) |
+| **pi0** | ![](https://img.shields.io/badge/0.92-blue) | ![](https://img.shields.io/badge/0.00-Pos-green) ![](https://img.shields.io/badge/0.00-Task-orange) | ![](https://img.shields.io/badge/0.90-blue) | ![](https://img.shields.io/badge/0.00-Pos-green) ![](https://img.shields.io/badge/0.00-Task-orange) | ![](https://img.shields.io/badge/0.82-blue) | ![](https://img.shields.io/badge/0.00-Pos-green) ![](https://img.shields.io/badge/0.00-Task-orange) | ![](https://img.shields.io/badge/0.98-blue) | ![](https://img.shields.io/badge/0.00-Pos-green) ![](https://img.shields.io/badge/0.00-Task-orange) |
+| **pi0.5** | ![](https://img.shields.io/badge/0.97-blue) | ![](https://img.shields.io/badge/0.38-Pos-green) ![](https://img.shields.io/badge/0.00-Task-orange) | ![](https://img.shields.io/badge/0.96-blue) | ![](https://img.shields.io/badge/0.20-Pos-green) ![](https://img.shields.io/badge/0.01-Task-orange) | ![](https://img.shields.io/badge/0.93-blue) | ![](https://img.shields.io/badge/0.08-Pos-green) ![](https://img.shields.io/badge/0.01-Task-orange) | ![](https://img.shields.io/badge/0.98-blue) | ![](https://img.shields.io/badge/0.17-Pos-green) ![](https://img.shields.io/badge/0.01-Task-orange) |
+| **univla** | ![](https://img.shields.io/badge/0.89-blue) | ![](https://img.shields.io/badge/0.09-Pos-green) ![](https://img.shields.io/badge/0.00-Task-orange) | ![](https://img.shields.io/badge/0.85-blue) | ![](https://img.shields.io/badge/0.05-Pos-green) ![](https://img.shields.io/badge/0.00-Task-orange) | ![](https://img.shields.io/badge/0.61-blue) | ![](https://img.shields.io/badge/0.00-Pos-green) ![](https://img.shields.io/badge/0.00-Task-orange) | ![](https://img.shields.io/badge/0.98-blue) | ![](https://img.shields.io/badge/0.00-Pos-green) ![](https://img.shields.io/badge/0.00-Task-orange) |
+
+> 🟦 **Original (LIBERO)** 🟩 **Position perturbation** 🟧 **Task perturbation**  
+> 📉 *All models collapse from >0.9 → ≈0.0 on LIBERO-Pro perturbations.*
+
+
 **Welcome to join our wechat discussion group, we will answer any questions in real time, and also welcome more in-depth academic discussion.**
 
 <img src="https://github.com/Zxy-MLlab/LIBERO-OOD/blob/master/images/wechat.png" width="300">
