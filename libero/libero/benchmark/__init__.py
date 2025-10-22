@@ -104,12 +104,19 @@ libero_suites = [
 "libero_object_object_ood",
 "libero_goal_object_ood",
 "libero_10_object_ood",
-"libero_spatial_object_ood",
 "libero_goal_relation_ood",
+"libero_spatial_object_ood",
 "libero_spatial_relation_ood",
 "libero_10_relation_ood",
 "libero_object_relation_ood",
-"libero_object_object_ood_test",
+"libero_10_semantic_ood",
+"libero_goal_semantic_ood",
+"libero_spatial_semantic_ood",
+"libero_object_semantic_ood",
+"libero_goal_temp",
+"libero_spatial_temp",
+"libero_10_temp",
+"libero_object_temp",
 ]
 task_maps = {}
 max_len = 0
@@ -651,8 +658,62 @@ class LIBERO_OBJECT_RELATION_OOD(Benchmark):
 
 
 @register_benchmark
-class LIBERO_OBJECT_OBJECT_OOD_TEST(Benchmark):
+class LIBERO_10_SEMANTIC_OOD(Benchmark):
     def __init__(self, task_order_index=0):
         super().__init__(task_order_index=task_order_index)
-        self.name = "libero_object_object_ood_test"
+        self.name = "libero_10_semantic_ood"
+        self._make_benchmark()
+
+
+@register_benchmark
+class LIBERO_GOAL_SEMANTIC_OOD(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_goal_semantic_ood"
+        self._make_benchmark()
+
+
+@register_benchmark
+class LIBERO_SPATIAL_SEMANTIC_OOD(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_spatial_semantic_ood"
+        self._make_benchmark()
+
+
+
+@register_benchmark
+class LIBERO_OBJECT_SEMANTIC_OOD(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_object_semantic_ood"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_GOAL_TEMP(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_goal_temp"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_SPATIAL_TEMP(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_spatial_temp"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_10_TEMP(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_10_temp"
+        self._make_benchmark()
+
+
+@register_benchmark
+class LIBERO_OBJECT_TEMP(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_object_temp"
         self._make_benchmark()
