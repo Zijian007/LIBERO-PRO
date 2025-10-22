@@ -16,7 +16,8 @@ generate_init_states.py
         --width 128
 """
 
-import os
+import os, sys
+sys.path.append("/hdd/zijianwang/openpi/third_party/LIBERO-PRO")
 import zipfile
 import pickle
 import numpy as np

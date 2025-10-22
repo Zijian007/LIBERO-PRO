@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Tuple, Any, Optional
 import subprocess
-from apache_beam.examples.dataframe.flight_delays import input_date
+# from apache_beam.examples.dataframe.flight_delays import input_date
 
 
 # -----------------------------
@@ -345,7 +345,7 @@ class EnvironmentReplacePerturbator:
         with open(config_path, "r", encoding="utf-8") as f:
             self.config = yaml.safe_load(f) or {}
 
-    def _extract_current_env(self, task_suite_name: str, task_name: str) -> str | None:
+    def _extract_current_env(self, task_suite_name: str, task_name: str) -> Optional[str]:
         suite_cfg = self.config.get(task_suite_name, {})
         entry = suite_cfg.get(task_name)
         if entry is None:
@@ -407,8 +407,8 @@ class EnvironmentReplacePerturbator:
             print("[环境替换] 无候选可替换环境，跳过。")
             return self.parser.file_content
 
-        # new_env = random.choice(candidates)
-        new_env = "living_room_table"
+        new_env = random.choice(candidates)
+        # new_env = "living_room_table"
         new_content = self.parser.file_content.replace(current_env, new_env)
         new_content = self._rewrite_problem_env_token(new_content, new_env)
         new_fix_type = self.ENV_FIXTYPE.get(new_env, None)
@@ -656,7 +656,7 @@ def create_env(
         task_suite_name=configs.get("task_suite_name", ""),
         flags=flags,
         configs=ood_task_configs,
-        seed=configs.get("seed", int),
+        seed=configs.get("seed", 100),
     )
 
     # 调用 EvalEnvCreator

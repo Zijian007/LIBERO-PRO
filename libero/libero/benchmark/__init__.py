@@ -60,6 +60,7 @@ libero_suites = [
     "libero_goal",
     "libero_90",
     "libero_10",
+    "libero_10_temp",
     "libero_mine",
     "libero_object_with_trigger", 
     "libero_object_triggered_episode", 
@@ -108,8 +109,7 @@ libero_suites = [
 "libero_goal_relation_ood",
 "libero_spatial_relation_ood",
 "libero_10_relation_ood",
-"libero_object_relation_ood",
-"libero_object_object_ood_test",
+"libero_object_relation_ood"
 ]
 task_maps = {}
 max_len = 0
@@ -292,6 +292,12 @@ class LIBERO_10(Benchmark):
         self.name = "libero_10"
         self._make_benchmark()
 
+@register_benchmark
+class LIBERO_10_TEMP(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_10_temp"
+        self._make_benchmark()
 
 @register_benchmark
 class LIBERO_100(Benchmark):
