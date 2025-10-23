@@ -41,7 +41,7 @@ class RedSticker(CustomObjects):
         super().__init__(
             custom_path=os.path.abspath(os.path.join(
                 os.path.dirname(__file__), "../../../../notebooks/custom_assets/red_sticker/red_sticker.xml"
-            )),,
+            )),
             name=name,
             obj_name=obj_name,
         )

@@ -407,8 +407,9 @@ class EnvironmentReplacePerturbator:
             print("[环境替换] 无候选可替换环境，跳过。")
             return self.parser.file_content
 
-        new_env = random.choice(candidates)
+        # new_env = random.choice(candidates)
         # new_env = "living_room_table"
+        new_env = "floor"
         new_content = self.parser.file_content.replace(current_env, new_env)
         new_content = self._rewrite_problem_env_token(new_content, new_env)
         new_fix_type = self.ENV_FIXTYPE.get(new_env, None)
