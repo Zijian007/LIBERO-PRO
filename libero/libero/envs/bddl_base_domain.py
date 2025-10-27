@@ -576,6 +576,7 @@ class BDDLBaseDomain(SingleArmEnv):
         conditioned_initial_place_state_on_sites = []
         conditioned_initial_place_state_on_objects = []
         conditioned_initial_place_state_in_objects = []
+        # print("All object names:", list(self.objects_dict.keys()))
 
         for state in initial_state:
             if state[0] == "on" and state[2] in self.objects_dict:

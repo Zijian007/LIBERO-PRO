@@ -1,9 +1,9 @@
-(define (problem LIBERO_Floor_Manipulation)
+(define (problem LIBERO_Kitchen_Tabletop_Manipulation)
   (:domain robosuite)
   (:language put the black bowl in the bottom drawer of the cabinet and close it)
     (:regions
       (white_cabinet_init_region
-          (:target floor)
+          (:target kitchen_table)
           (:ranges (
               (-0.01 0.29 0.01 0.31)
             )
@@ -14,7 +14,7 @@
           )
       )
       (wine_rack_init_region
-          (:target floor)
+          (:target kitchen_table)
           (:ranges (
               (-0.11 -0.31 -0.09000000000000001 -0.29)
             )
@@ -25,7 +25,7 @@
           )
       )
       (akita_black_bowl_init_region
-          (:target floor)
+          (:target kitchen_table)
           (:ranges (
               (0.0049999999999999975 -0.07500000000000001 0.055 -0.025)
             )
@@ -36,7 +36,7 @@
           )
       )
       (wine_bottle_init_region
-          (:target floor)
+          (:target kitchen_table)
           (:ranges (
               (-0.175 0.025 -0.125 0.07500000000000001)
             )
@@ -64,7 +64,7 @@
     )
 
   (:fixtures
-    floor - floor
+    kitchen_table - kitchen_table
     white_cabinet_1 - white_cabinet
     wine_rack_1 - wine_rack
   )
@@ -80,10 +80,10 @@
   )
 
   (:init
-    (On akita_black_bowl_1 floor_akita_black_bowl_init_region)
-    (On wine_bottle_1 floor_wine_bottle_init_region)
-    (On white_cabinet_1 floor_white_cabinet_init_region)
-    (On wine_rack_1 floor_wine_rack_init_region)
+    (On akita_black_bowl_1 kitchen_table_wine_rack_init_region)
+    (On wine_bottle_1 kitchen_table_wine_bottle_init_region)
+    (On white_cabinet_1 kitchen_table_white_cabinet_init_region)
+    (On wine_rack_1 kitchen_table_akita_black_bowl_init_region)
     (Open white_cabinet_1_bottom_region)
   )
 

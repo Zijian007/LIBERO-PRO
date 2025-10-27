@@ -188,19 +188,21 @@ libero_10:
       - yellow_plate
     white_yellow_mug:
       - white_porcelain_mug
-    porcelain_mug:
-      - white_porcelain_mug
+    # porcelain_mug:
+    #   - white_porcelain_mug
   LIVING_ROOM_SCENE6_put_the_white_mug_on_the_plate_and_put_the_chocolate_pudding_to_the_right_of_the_plate:
     plate:
       - yellow_plate
     chocolate_pudding:
       - green_chocolate_pudding
-    porcelain_mug:
-      - white_porcelain_mug
+    # porcelain_mug:
+    #   - white_porcelain_mug
   STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy:
-    black_book:
-      - black_bowl
-      - bigger_akita_black_bowl
+    # black_book:
+    #   - black_bowl
+    #   - bigger_akita_black_bowl
+    white_yellow_mug:
+      - white_porcelain_mug
 
 libero_object:
   pick_up_the_alphabet_soup_and_place_it_in_the_basket:

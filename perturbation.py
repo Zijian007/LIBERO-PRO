@@ -3,11 +3,54 @@ import re
 import random
 import yaml
 import sys
+import logging
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Tuple, Any, Optional
 import subprocess
 # from apache_beam.examples.dataframe.flight_delays import input_date
+
+
+# -----------------------------
+# 日志配置
+# -----------------------------
+
+def setup_perturbation_logger(log_file: Optional[str] = None, 
+                               level: int = logging.INFO,
+                               also_console: bool = True) -> None:
+    """
+    配置扰动日志记录器
+    
+    Args:
+        log_file: 日志文件路径，如果为 None 则只输出到控制台
+        level: 日志级别 (默认: logging.INFO)
+        also_console: 是否同时输出到控制台 (默认: True)
+    
+    Example:
+        setup_perturbation_logger('/path/to/perturbation.log')
+    """
+    handlers = []
+    
+    if log_file:
+        os.makedirs(os.path.dirname(log_file), exist_ok=True)
+        file_handler = logging.FileHandler(log_file, encoding='utf-8')
+        file_handler.setFormatter(
+            logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        )
+        handlers.append(file_handler)
+    
+    if also_console or not log_file:
+        console_handler = logging.StreamHandler()
+        console_handler.setFormatter(
+            logging.Formatter('%(levelname)s - %(message)s')
+        )
+        handlers.append(console_handler)
+    
+    logging.basicConfig(
+        level=level,
+        handlers=handlers,
+        force=True  # 强制重新配置，覆盖已有配置
+    )
 
 
 # -----------------------------
@@ -57,15 +100,18 @@ class SwapPerturbator:
             self.config = yaml.safe_load(f)
 
     def perturb(self, task_suite_name: str, task_name: str) -> str:
+        print("=============================")
+        print(f"任务 {task_name}: ")
         content = self.parser.file_content
         objs_interest = list(self.parser.objects_of_interest or [])
+        print(f"    准备交换的物体有：{objs_interest}")
         if not objs_interest:
-            print("没有找到感兴趣物体")
+            print("    没有找到感兴趣物体")
             return content
 
         task_cfg = self.config.get(task_suite_name, {}).get(task_name, None)
         if task_cfg is None:
-            print(f"任务 {task_name} 没有配置 allowed_swaps")
+            print(f"    任务 {task_name} 没有配置 allowed_swaps")
             return content
 
         init_states = dict(self.parser.initial_states)
@@ -89,6 +135,7 @@ class SwapPerturbator:
 
         for obj in objs_interest:
             if obj in used:
+                print(f"   [跳过] 感兴趣物体 {obj} 已被占用")
                 continue
             cand_pool = candidates_for(obj)
             cand_pool = [
@@ -96,7 +143,7 @@ class SwapPerturbator:
                 if x != obj and x in init_states and x not in used
             ]
             if not cand_pool:
-                print(f"[跳过] 感兴趣物体 {obj} 没有可用候选（可能未在 init 中或已被占用）")
+                print(f"   [跳过] 感兴趣物体 {obj} 没有可用候选（可能未在 init 中或已被占用）")
                 continue
 
             swap_obj = random.choice(cand_pool)
@@ -104,7 +151,7 @@ class SwapPerturbator:
             reg_a = init_states.get(obj)
             reg_b = init_states.get(swap_obj)
             if not reg_a or not reg_b:
-                print(f"[跳过] {obj} 或 {swap_obj} 不在 init 中，无法交换")
+                print(f"    [跳过] {obj} 或 {swap_obj} 不在 init 中，无法交换")
                 continue
 
             pat_a = rf"\(On\s+{re.escape(obj)}\s+{re.escape(reg_a)}\s*\)"
@@ -118,12 +165,12 @@ class SwapPerturbator:
                 used.add(obj)
                 used.add(swap_obj)
                 pairs.append((obj, swap_obj))
-                print(f"任务 {task_name}: 已将 {obj} 与 {swap_obj} 交换位置")
+                print(f"     已将 {obj} 与 {swap_obj} 交换位置")
             else:
-                print(f"[警告] {obj} 或 {swap_obj} 的 On 语句未匹配到，可能 BDDL 格式与正则不一致")
+                print(f"    [警告] {obj} 或 {swap_obj} 的 On 语句未匹配到，可能 BDDL 格式与正则不一致")
 
         if not pairs:
-            print("没有形成任何交换对，未修改文件")
+            print("    没有形成任何交换对，未修改文件")
 
         return content
 
@@ -175,6 +222,8 @@ class ObjectReplacePerturbator:
         else:
             prefix, language_block, suffix = content, "", ""
 
+        # init_prefix = prefix 
+        # init_suffix = suffix
         for old_name, new_name in mapping.items():
             prefix = prefix.replace(old_name, new_name)
             suffix = suffix.replace(old_name, new_name)
@@ -409,14 +458,23 @@ class EnvironmentReplacePerturbator:
 
         # new_env = random.choice(candidates)
         # new_env = "living_room_table"
-        new_env = "floor"
+        env_mapping = {
+            "main_table": "kitchen_table",
+            "kitchen_table": "main_table",
+            "living_room_table": "floor",
+            "study_table": "main_table",
+            "floor": "living_room_table",
+        }
+
+        # new_env = "floor"
+        new_env = env_mapping.get(current_env, current_env)
         new_content = self.parser.file_content.replace(current_env, new_env)
         new_content = self._rewrite_problem_env_token(new_content, new_env)
         new_fix_type = self.ENV_FIXTYPE.get(new_env, None)
         if new_fix_type:
             new_content = self._rewrite_fixtures_type(new_content, new_env, new_fix_type)
 
-        print(f"[环境替换] {task_name}: {current_env} -> {new_env}")
+        logging.info(f"[环境替换] {task_name}: \n current_env: {current_env} -> new_env: {new_env}")
         return new_content
 
 
@@ -536,7 +594,6 @@ class BDDLCombinedPerturbator:
                 )
             else:
                 print("[组合扰动] 缺少 task 配置或路径不存在，跳过任务替换。")
-
         return current
 
 
@@ -584,6 +641,7 @@ class EvalEnvCreator:
 def process_bddl_file_mixed(input_dir: str,
                             task_suite_name: str,
                             flags: PerturbFlags,
+                            suffix: str,
                             configs: Dict[str, str],
                             seed: Optional[int] = None) -> None:
     """
@@ -591,13 +649,14 @@ def process_bddl_file_mixed(input_dir: str,
 
         Args:
             input_dir (str): 输入 BDDL 文件所在的目录。
+            suffix (str): 临时文件后缀。
             configs (dict): 扰动器配置。
             task_suite_name (str): 任务集名称。
             flags (dict): 扰动参数标志。
             seed (int): 随机种子。
         """
     input_path = Path(input_dir)
-    output_dir = input_path.parent / f"{input_path.name}_temp"
+    output_dir = input_path.parent / f"{input_path.name}_{suffix}"
     output_dir.mkdir(parents=True, exist_ok=True)
 
     for file_path in input_path.glob("*.bddl"):
@@ -628,6 +687,7 @@ def process_bddl_file_mixed(input_dir: str,
 
 def create_env(
     configs: dict = None,
+    suffix: str = "temp",
 ):
     """
     创建评估环境
@@ -656,6 +716,7 @@ def create_env(
         input_dir=configs.get("bddl_files_path", ""),
         task_suite_name=configs.get("task_suite_name", ""),
         flags=flags,
+        suffix=suffix,
         configs=ood_task_configs,
         seed=configs.get("seed", 100),
     )

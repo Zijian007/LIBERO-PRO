@@ -91,7 +91,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Generate init states for LIBERO BDDL tasks.")
     parser.add_argument("--bddl_base_dir", type=str, required=True, help="Directory containing BDDL files.")
     parser.add_argument("--output_dir", type=str, required=True, help="Directory to save .pruned_init files.")
-    parser.add_argument("--num_inits", type=int, default=50, help="Number of init states to generate per task.")
+    parser.add_argument("--num_inits", type=int, default=1, help="Number of init states to generate per task.")
     parser.add_argument("--height", type=int, default=128, help="Camera height.")
     parser.add_argument("--width", type=int, default=128, help="Camera width.")
     return parser.parse_args()

@@ -60,6 +60,10 @@ libero_suites = [
     "libero_goal",
     "libero_90",
     "libero_10",
+    "libero_10_env",
+    "libero_10_internal_swap",
+    "libero_10_object",
+    "libero_10_displacement",
     "libero_10_temp",
     "libero_mine",
     "libero_object_with_trigger", 
@@ -298,6 +302,35 @@ class LIBERO_10(Benchmark):
     def __init__(self, task_order_index=0):
         super().__init__(task_order_index=task_order_index)
         self.name = "libero_10"
+        self._make_benchmark()
+
+        
+@register_benchmark
+class LIBERO_10_ENV(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_10_env"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_10_INTERNAL_SWAP(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_10_internal_swap"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_10_DISPLACEMENT(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_10_displacement"
+        self._make_benchmark()
+
+@register_benchmark
+class LIBERO_10_OBJECT(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_10_object"
         self._make_benchmark()
 
 @register_benchmark

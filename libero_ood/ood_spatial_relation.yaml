@@ -118,14 +118,14 @@ libero_10:
   KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it:
     akita_black_bowl_1:
       - wine_bottle_1
-      - wine_rack_1
-    white_cabinet_1:
-      - wine_rack_1
+      # - wine_rack_1
+    # white_cabinet_1:
+    #   - wine_rack_1
   KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it:
     white_yellow_mug_1:
       - porcelain_mug_1
-    microwave_1:
-      - porcelain_mug_1
+    # microwave_1:
+    #   - porcelain_mug_1
   KITCHEN_SCENE8_put_both_moka_pots_on_the_stove:
     moka_pot_1:
       - flat_stove_1
