@@ -16,3 +16,11 @@ logs/
 *.mp4
 libero.egg-info/
 .vscode/
+images/
+configs/
+libero/
+libero_ood/
+benchmark_scripts/
+notebooks/
+scripts/
+templates/
